@@ -88,6 +88,15 @@ let teams = [
   },
 ];
 
+/* -------------------- performance, image delay solution ------------------- */
+const preloadImages = () => {
+  for (let i = 1; i <= 10; i++) {
+    const img = new Image();
+    img.src = `/images/${i}.jpeg`; // this loads image into browser cache
+  }
+};
+preloadImages();
+
 let y; // variable to store the team index info, global to retain its value even for new click, and then check agains new value
 
 btn.addEventListener('click', function () {
