@@ -92,9 +92,12 @@ let teams = [
 const preloadImages = () => {
   for (let i = 1; i <= 10; i++) {
     const img = new Image();
-    img.src = `/images/${i}.jpeg`; // this loads image into browser cache
+    img.src = `/TeamFlags/${i}.jpg`; // this loads image into browser cache
   }
 };
+preloadImages();
+preloadImages();
+preloadImages();
 preloadImages();
 
 let y; // variable to store the team index info, global to retain its value even for new click, and then check agains new value
@@ -136,7 +139,7 @@ btn.addEventListener('click', function () {
 
     main.style.background = `linear-gradient(rgba(0, 0, 0, 0.663), rgba(0, 0, 0, 0.454)), url(./TeamFlags/${
       y + 1
-    }.jpeg)`;
+    }.jpg)`;
     main.style.backgroundPosition = 'center';
     main.style.backgroundSize = 'cover';
   }
