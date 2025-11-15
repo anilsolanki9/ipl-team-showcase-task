@@ -1,11 +1,10 @@
 let main = document.querySelector('main');
 let h1 = document.querySelector('h1');
 let p = document.querySelector('p');
-let stars = document.querySelectorAll('#stars > img');
 let btn = document.querySelector('#btn');
-let spanSign = document.querySelector('#sign');
 let isStarted = false;
 
+/* ------------------------------- Teams array ------------------------------ */
 let teams = [
   {
     team: 'CSK',
@@ -66,7 +65,7 @@ let teams = [
   {
     team: 'DC',
     primary: 'blue',
-    secondary: 'white',
+    secondary: 'silver',
     fullname: 'Delhi Capitals',
     trophies: 0,
     captain: 'Axar Patel',
@@ -82,74 +81,54 @@ let teams = [
   {
     team: 'LSG',
     primary: 'blue',
-    secondary: 'white',
+    secondary: 'silver',
     fullname: 'Lucknow Super Giants',
     trophies: 0,
     captain: 'Rishabh Pant',
   },
 ];
 
-let y;
+let y; // variable to store the team index info, global to retain its value even for new click, and then check agains new value
 
 btn.addEventListener('click', function () {
-  stars = document.querySelectorAll('#stars > img');
+  //this algo make sure for every new click all 5 stars are visible, then later some are hide (as per wins)
+  let stars = document.querySelectorAll('#stars > img');
   for (let i = 0; i < stars.length; i++) {
     stars[i].classList.remove('hidden');
   }
 
-  if (!isStarted) {
-    btn.textContent = 'CHANGE';
-    h1.textContent = 'Chennai Super Kings';
-    p.innerHTML = 'Captain - Mahendra Singh Dhoni <span>Mahendra Singh Dhoni</span>';
-    isStarted = true;
-  }
+  if (!isStarted) isStarted = true;
+
   if (isStarted) {
-    let x = Math.floor(Math.random() * teams.length);
-    if (y === x) x = Math.floor(Math.random() * teams.length);
-    if (x !== y) {
-      y = x;
-      let win = teams[x];
-      h1.textContent = win.fullname;
-      p.innerHTML = `Captain - ${win.captain} <span>${win.captain}</span>`;
-      btn.style.backgroundColor = win.secondary;
-      btn.style.color = win.primary;
-      btn.style.border = `2px solid ${win.primary}`;
-      let iplTrophies = win.trophies;
-      for (let i = iplTrophies; i < stars.length; i++) {
-        stars[i].classList.add('hidden');
-      }
-      switch (win.team) {
-        case 'CSK':
-          main.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url(/TeamFlags/1CSK.jpeg)`;
-          break;
-        case 'MI':
-          main.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url(/TeamFlags/2MI.jpeg)`;
-          break;
-        case 'KKR':
-          main.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url(/TeamFlags/3KKR.jpeg)`;
-          break;
-        case 'GT':
-          main.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url(/TeamFlags/4GT.jpeg)`;
-          break;
-        case 'RR':
-          main.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url(/TeamFlags/5RR.jpeg)`;
-          break;
-        case 'SRH':
-          main.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url(/TeamFlags/6SRH.jpeg)`;
-          break;
-        case 'RCB':
-          main.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url(/TeamFlags/7RCB.jpeg)`;
-          break;
-        case 'DC':
-          main.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url(/TeamFlags/8DC.jpeg)`;
-          break;
-        case 'PBKS':
-          main.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url(/TeamFlags/9PBKS.jpeg)`;
-          break;
-        case 'LSG':
-          main.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url(/TeamFlags/10LSG.jpeg)`;
-          break;
-      }
+    let x;
+    //loop to make sure every time user click, it get an unique value
+    do {
+      x = Math.floor(Math.random() * teams.length);
+    } while (x === y);
+
+    y = x; // assign x to y for retaining value for next click
+
+    let win = teams[x]; // teams me se x index ke element ko win me store kr diya
+
+    h1.textContent = win.fullname;
+    p.innerHTML = `Captain - ${win.captain} <span id="sign">${win.captain}</span>`;
+    let spanSign = document.querySelector('#sign');
+    btn.style.backgroundColor = win.secondary;
+    btn.style.color = win.primary;
+    btn.style.border = `2px solid ${win.primary}`;
+    main.style.backgroundColor = win.primary;
+    btn.textContent = 'CHANGE';
+    spanSign.style.color = win.primary;
+
+    let iplTrophies = win.trophies;
+    for (let i = iplTrophies; i < stars.length; i++) {
+      stars[i].classList.add('hidden');
     }
+
+    main.style.background = `linear-gradient(rgba(0, 0, 0, 0.663), rgba(0, 0, 0, 0.454)), url(./TeamFlags/${
+      y + 1
+    }.jpeg)`;
+    main.style.backgroundPosition = 'center';
+    main.style.backgroundSize = 'cover';
   }
 });
